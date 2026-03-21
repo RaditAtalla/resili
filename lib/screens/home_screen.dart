@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:resili/themes/app_colors.dart';
+import 'package:resili/widgets/appbar_layout.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -10,69 +11,70 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color(0xFFF8FAFB),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 54),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _appBar(username: "Mozart", picture: "assets/profilepic.png"),
-              SizedBox(height: 32),
+        child: Column(
+          children: [
+            _homeAppBar(username: "Mozart", picture: "assets/profilepic.png"),
+            SizedBox(height: 12),
 
-              _deviceStatus(isConnected: true),
-              SizedBox(height: 10),
-
-              _healthIndicator(score: 78),
-              SizedBox(height: 18),
-
-              _airLimit(score: 62),
-              SizedBox(height: 24),
-
-              // Statistics
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _infoCard(
-                    iconData: Icons.hive,
-                    color: AppColors.warning,
-                    level: "MODERAT",
-                    mainInfo: "34",
-                    secondaryInfo: "nm/m3",
-                    type: "PM2.5",
+                  _deviceStatus(isConnected: true),
+                  SizedBox(height: 10),
+
+                  _healthIndicator(score: 78),
+                  SizedBox(height: 18),
+
+                  _airLimit(score: 62),
+                  SizedBox(height: 24),
+
+                  // Statistics
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _infoCard(
+                        iconData: Icons.hive,
+                        color: AppColors.warning,
+                        level: "MODERAT",
+                        mainInfo: "34",
+                        secondaryInfo: "nm/m3",
+                        type: "PM2.5",
+                      ),
+                      _infoCard(
+                        iconData: Icons.wind_power,
+                        color: AppColors.success,
+                        level: "RENDAH",
+                        mainInfo: "Aman",
+                        type: "VOC",
+                      ),
+                    ],
                   ),
+                  SizedBox(height: 12),
                   _infoCard(
-                    iconData: Icons.wind_power,
+                    iconData: Icons.cloud,
                     color: AppColors.success,
-                    level: "RENDAH",
-                    mainInfo: "Aman",
-                    type: "VOC",
+                    level: "NORMAL",
+                    mainInfo: "12",
+                    secondaryInfo: "ppm",
+                    type: "Karbon Monoksida",
                   ),
+                  SizedBox(height: 54,)
                 ],
               ),
-              SizedBox(height: 12),
-              _infoCard(
-                iconData: Icons.cloud,
-                color: AppColors.success,
-                level: "NORMAL",
-                mainInfo: "12",
-                secondaryInfo: "ppm",
-                type: "Karbon Monoksida",
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _appBar({ required String picture, required String username}) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 10),
+  Widget _homeAppBar({required String picture, required String username}) {
+    return AppbarLayout(
       child: Row(
         children: [
-          CircleAvatar(
-            backgroundImage: AssetImage(picture),
-            radius: 30,
-          ),
+          CircleAvatar(backgroundImage: AssetImage(picture), radius: 30),
           SizedBox(width: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,24 +102,27 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _deviceStatus({ required bool isConnected }) {
+  Widget _deviceStatus({required bool isConnected}) {
     return Row(
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 4,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           decoration: BoxDecoration(
-            color: (isConnected ? AppColors.success : AppColors.danger).withValues(alpha: 0.1),
+            color: (isConnected ? AppColors.success : AppColors.danger)
+                .withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(999),
-            border: Border.all(color: (isConnected ? AppColors.success : AppColors.danger).withValues(alpha: 0.2)),
+            border: Border.all(
+              color: (isConnected ? AppColors.success : AppColors.danger)
+                  .withValues(alpha: 0.2),
+            ),
           ),
           child: Row(
             spacing: 6,
             children: [
               CircleAvatar(
-                backgroundColor: isConnected ? AppColors.success : AppColors.danger,
+                backgroundColor: isConnected
+                    ? AppColors.success
+                    : AppColors.danger,
                 radius: 8,
               ),
               Text(
@@ -134,7 +139,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _healthIndicator({ required double score }) {
+  Widget _healthIndicator({required double score}) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -221,7 +226,9 @@ class HomeScreen extends StatelessWidget {
           ),
           SizedBox(height: 14),
           Text(
-            score > 50 ? "Kamu baik-baik aja kok! 😊" : "Kurangi paparan asap! 🚨",
+            score > 50
+                ? "Kamu baik-baik aja kok! 😊"
+                : "Kurangi paparan asap! 🚨",
             style: GoogleFonts.inter(
               color: Color(0xFF383838),
               fontSize: 18,
@@ -234,7 +241,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _airLimit({ required double score }) {
+  Widget _airLimit({required double score}) {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -264,7 +271,8 @@ class HomeScreen extends StatelessWidget {
               ),
               ShaderMask(
                 blendMode: BlendMode.srcIn,
-                shaderCallback: (bounds) => AppColors.lgradient.createShader(bounds),
+                shaderCallback: (bounds) =>
+                    AppColors.lgradient.createShader(bounds),
                 child: Text(
                   "${score.toString()}%",
                   style: GoogleFonts.plusJakartaSans(

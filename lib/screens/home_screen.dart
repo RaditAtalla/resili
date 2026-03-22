@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:resili/screens/profile_screen.dart';
 import 'package:resili/themes/app_colors.dart';
 import 'package:resili/widgets/appbar_layout.dart';
 
@@ -13,7 +14,11 @@ class HomeScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _homeAppBar(username: "Mozart", picture: "assets/profilepic.png"),
+            _homeAppBar(
+              username: "Mozart",
+              picture: "assets/profilepic.png",
+              context: context,
+            ),
             SizedBox(height: 12),
 
             Padding(
@@ -60,7 +65,7 @@ class HomeScreen extends StatelessWidget {
                     secondaryInfo: "ppm",
                     type: "Karbon Monoksida",
                   ),
-                  SizedBox(height: 54,)
+                  SizedBox(height: 54),
                 ],
               ),
             ),
@@ -70,11 +75,28 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _homeAppBar({required String picture, required String username}) {
+  Widget _homeAppBar({
+    required String picture,
+    required String username,
+    required BuildContext context,
+  }) {
     return AppbarLayout(
       child: Row(
         children: [
-          CircleAvatar(backgroundImage: AssetImage(picture), radius: 30),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const ProfileScreen(),
+                ),
+              );
+            },
+            child: CircleAvatar(
+              backgroundImage: AssetImage(picture),
+              radius: 30,
+            ),
+          ),
           SizedBox(width: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
